@@ -17,7 +17,7 @@ let package = Package(
         .target(
             name: "Pluot",
             dependencies: [],
-            path: "Pluoa"),
+            path: "Pluot"),
         .testTarget(
             name: "PluotTests",
             dependencies: ["Pluot"],
