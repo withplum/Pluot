@@ -9,74 +9,39 @@
 import UIKit
 
 
-public struct Pluot<T: StyleSheet>
+public final class Pluot
 {
-    // Public
-    public let attributedString: NSAttributedString
-}
+    // Private
+    private let defaultStyles: Set<Style>
+    
+    // MARK: Initialization
 
-// MARK: ExpressibleByStringLiteral
-
-extension Pluot: ExpressibleByStringLiteral
-{
-    public init(stringLiteral: String)
+    public init(_ styles: Style...)
     {
-        self.attributedString = NSAttributedString(string: stringLiteral, attributes: T.default.attributes)
+        self.defaultStyles = Set(styles)
     }
-}
-
-// MARK: CustomStringConvertible
-
-extension Pluot: CustomStringConvertible
-{
-    public var description: String {
-        String(describing: self.attributedString)
-    }
-}
-
-// MARK: ExpressibleByStringInterpolation
-
-extension Pluot: ExpressibleByStringInterpolation
-{
-    public init(stringInterpolation: Pluot.StringInterpolation<T>)
+    
+    // MARK: API
+    
+    public func build(_ components: Component...) -> NSAttributedString
     {
-        self.attributedString = stringInterpolation.attributedString
-    }
-}
-
-
-
-// MARK: StringInterpolation
-
-public extension Pluot
-{
-    struct StringInterpolation<T: StyleSheet>: StringInterpolationProtocol
-    {
-        // Fileprivate
-        fileprivate var attributedString = NSMutableAttributedString()
-        
-        // MARK: Initialization
-        
-        public init(literalCapacity: Int, interpolationCount: Int) { }
-        
-        // MARK: API
-        
-        public mutating func appendLiteral(_ literal: String)
-        {
-            let string = NSAttributedString(string: literal, attributes: T.default.attributes)
-            self.attributedString.append(string)
-        }
-        
-        public func appendInterpolation(_ string: String, _ style: Style)
-        {
-            let string = NSAttributedString(string: string, attributes: style.attributes)
-            self.attributedString.append(string)
-        }
-        
-        public func appendInterpolation(_ string: String)
-        {
-            let string = NSAttributedString(string: string, attributes: T.default.attributes)
-            self.attributedString.append(string)
+        components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
+            let componentAttribute = component.attribute
+            let combinedStyles: Set<Style>
+            if let unwrappedStyles = componentAttribute.styles
+            {
+                combinedStyles = unwrappedStyles.union(self.defaultStyles)
+            }
+            else
+            {
+                combinedStyles = self.defaultStyles
+            }
+            
+            let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
+                dictionary[style.attribute.0] = style.attribute.1
+            }
+            
+            attributedString.append(NSAttributedString(string: componentAttribute.string, attributes: attributes))
         }
     }
 }

@@ -15,13 +15,20 @@ internal final class RootViewController: UIViewController
     // Private
     private let label: UILabel = {
         let uuid = UUID().uuidString
-        let string: Pluot<MainStyleSheet> = """
-Hello. This is a test
-\(uuid, MainStyleSheet.bold)
-"""
+
         let view = UILabel()
         view.numberOfLines = 0
-        view.attributedText = string.attributedString
+        view.attributedText = Pluot(
+            .font(.systemFont(ofSize: 24.0)),
+            .color(.red),
+            .paragraph({ (style) in
+                style.alignment = .center
+            })
+        ).build(
+            .string("Hello. This is a test"),
+            .space,
+            .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)])
+        )
         return view
     }()
     
@@ -40,26 +47,4 @@ Hello. This is a test
         super.viewDidLayoutSubviews()
         self.label.frame = self.view.bounds
     }
-}
-
-
-
-// MARK: Main style sheet
-
-internal struct MainStyleSheet: StyleSheet
-{
-    static let `default` = Style()
-        .font(.systemFont(ofSize: 24.0))
-        .color(.red)
-        .paragraph { (style) in
-            style.alignment = .left
-        }
-    
-    
-    static let bold = Style()
-        .font(.systemFont(ofSize: 24.0, weight: .bold))
-        .color(.blue)
-        .paragraph { (style) in
-            style.alignment = .left
-        }
 }

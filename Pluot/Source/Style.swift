@@ -2,42 +2,77 @@
 //  Style.swift
 //  Pluot
 //
-//  Created by Red Davis on 10/11/2019.
+//  Created by Red Davis on 19/11/2019.
 //  Copyright © 2019 Plum Fintech Limited. All rights reserved.
 //
 
 import UIKit
 
 
-public final class Style
+public extension Pluot
 {
-    // Intenal
-    internal private(set) var attributes = [NSAttributedString.Key : Any]()
-    
-    // MARK: Initialization
-    
-    public init() { }
-    
-    // MARK: Attributes
-    
-    public func font(_ font: UIFont) -> Self
+    enum Style
     {
-        self.attributes[.font] = font
-        return self
-    }
-    
-    public func color(_ color: UIColor) -> Self
-    {
-        self.attributes[.foregroundColor ] = color
-        return self
-    }
-    
-    public func paragraph(_ configuration: (_ style: NSMutableParagraphStyle) -> Void) -> Self
-    {
-        let style = NSMutableParagraphStyle()
-        configuration(style)
-        self.attributes[.paragraphStyle] = style
+        case font(UIFont)
+        case color(UIColor)
+        case paragraph(_ configuration: (_ style: NSMutableParagraphStyle) -> Void)
         
-        return self
+        // MARK: Attributes
+        
+        internal var attribute: (NSAttributedString.Key, Any) {
+            switch self
+            {
+            case .font(let font):
+                return (.font, font)
+            case .color(let color):
+                return (.foregroundColor, color)
+            case .paragraph(let configuration):
+                let style = NSMutableParagraphStyle()
+                configuration(style)
+                
+                return (.paragraphStyle, style)
+            }
+        }
+    }
+}
+
+// MARK: Hashable
+
+extension Pluot.Style: Hashable
+{
+    public func hash(into hasher: inout Hasher)
+    {
+        let hashValue: Int
+        switch self
+        {
+        case .font:
+            hashValue = 0
+        case .color:
+            hashValue = 1
+        case .paragraph:
+            hashValue = 2
+        }
+        
+        hasher.combine(hashValue)
+    }
+}
+
+// MARK: Equatable
+
+extension Pluot.Style: Equatable
+{
+    public static func == (lhs: Pluot.Style, rhs: Pluot.Style) -> Bool
+    {
+        switch (lhs, rhs)
+        {
+        case (.font, .font):
+            return true
+        case (.color, .color):
+            return true
+        case (.paragraph, .paragraph):
+            return true
+        default:
+            return false
+        }
     }
 }

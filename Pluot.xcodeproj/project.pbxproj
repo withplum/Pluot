@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A48D288223843F660014C961 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48D288123843F660014C961 /* Style.swift */; };
+		A48D288423843FAE0014C961 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48D288323843FAE0014C961 /* Component.swift */; };
 		A4DA00A9237833E100F9239B /* Pluot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4DA009F237833E000F9239B /* Pluot.framework */; };
 		A4DA00B0237833E100F9239B /* Pluot.h in Headers */ = {isa = PBXBuildFile; fileRef = A4DA00A2237833E000F9239B /* Pluot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A4DA00C02378350700F9239B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A4DA00BF2378350700F9239B /* README.md */; };
 		A4DA00C32378359D00F9239B /* Pluot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00C22378359D00F9239B /* Pluot.swift */; };
 		A4DA00C723784FD400F9239B /* PluotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00C623784FD400F9239B /* PluotTests.swift */; };
-		A4DA00CA23784FF500F9239B /* TestStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00C923784FF500F9239B /* TestStyleSheet.swift */; };
-		A4DA00CC2378566B00F9239B /* StyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00CB2378566B00F9239B /* StyleSheet.swift */; };
-		A4DA00CE2378567C00F9239B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00CD2378567C00F9239B /* Style.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A48D288123843F660014C961 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		A48D288323843FAE0014C961 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		A4DA009F237833E000F9239B /* Pluot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pluot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4DA00A2237833E000F9239B /* Pluot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pluot.h; sourceTree = "<group>"; };
 		A4DA00A3237833E000F9239B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -37,9 +38,6 @@
 		A4DA00BF2378350700F9239B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A4DA00C22378359D00F9239B /* Pluot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pluot.swift; sourceTree = "<group>"; };
 		A4DA00C623784FD400F9239B /* PluotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluotTests.swift; sourceTree = "<group>"; };
-		A4DA00C923784FF500F9239B /* TestStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStyleSheet.swift; sourceTree = "<group>"; };
-		A4DA00CB2378566B00F9239B /* StyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleSheet.swift; sourceTree = "<group>"; };
-		A4DA00CD2378567C00F9239B /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,8 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				A4DA00C22378359D00F9239B /* Pluot.swift */,
-				A4DA00CB2378566B00F9239B /* StyleSheet.swift */,
-				A4DA00CD2378567C00F9239B /* Style.swift */,
+				A48D288123843F660014C961 /* Style.swift */,
+				A48D288323843FAE0014C961 /* Component.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -146,7 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				A4DA00C523784FC900F9239B /* Tests */,
-				A4DA00C823784FE600F9239B /* Models */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -157,14 +154,6 @@
 				A4DA00C623784FD400F9239B /* PluotTests.swift */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		A4DA00C823784FE600F9239B /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A4DA00C923784FF500F9239B /* TestStyleSheet.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,8 +268,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4DA00C32378359D00F9239B /* Pluot.swift in Sources */,
-				A4DA00CE2378567C00F9239B /* Style.swift in Sources */,
-				A4DA00CC2378566B00F9239B /* StyleSheet.swift in Sources */,
+				A48D288423843FAE0014C961 /* Component.swift in Sources */,
+				A48D288223843F660014C961 /* Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +277,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4DA00CA23784FF500F9239B /* TestStyleSheet.swift in Sources */,
 				A4DA00C723784FD400F9239B /* PluotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

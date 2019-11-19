@@ -22,22 +22,19 @@ internal final class PluotTests: XCTestCase
     // MARK: Tests
     
     /// Tests that Pluot uses the default style on string literals if not style has been set.
-    func testUseOfDefaultStyleOnStringLiteral()
+    func testUseOfDefaultStyle()
     {
-        let string: Pluot<TestStyleSheet> = "test"
-        let attributes = string.attributedString.attributes(at: 0, effectiveRange: nil)
+        let pluot = Pluot(
+            .color(.red),
+            .font(.systemFont(ofSize: 24.0)),
+            .paragraph({ (style) in
+                style.alignment = .center
+            })
+        )
         
-        XCTAssertEqual(attributes[.foregroundColor] as? UIColor, UIColor.red)
-        XCTAssertEqual(attributes[.font] as? UIFont, UIFont.systemFont(ofSize: 24.0))
-        XCTAssertEqual((attributes[.paragraphStyle] as? NSMutableParagraphStyle)?.alignment, .center)
-    }
-    
-    /// Tests that Pluot uses the default style on interpolated strings that have no
-    /// style specified.
-    func testUseOfDefaultStyleOnInterpolatedStringsWithNoSpecifiedStyle()
-    {
-        let string: Pluot<TestStyleSheet> = "\("test")"
-        let attributes = string.attributedString.attributes(at: 0, effectiveRange: nil)
+        let attributes = pluot.build(
+            .string("test")
+        ).attributes(at: 0, effectiveRange: nil)
         
         XCTAssertEqual(attributes[.foregroundColor] as? UIColor, UIColor.red)
         XCTAssertEqual(attributes[.font] as? UIFont, UIFont.systemFont(ofSize: 24.0))
@@ -45,13 +42,21 @@ internal final class PluotTests: XCTestCase
     }
     
     /// Tests that Pluot uses the specified style.
-    func testUseOfSpecifiedStyle()
+    func testOridingStyles()
     {
-        let string: Pluot<TestStyleSheet> = "\("test", TestStyleSheet.body)"
-        let attributes = string.attributedString.attributes(at: 0, effectiveRange: nil)
+        let pluot = Pluot(
+            .color(.red),
+            .font(.systemFont(ofSize: 24.0)),
+            .paragraph({ (style) in
+                style.alignment = .center
+            })
+        )
+        
+        let attributes = pluot.build(
+            .string("test", [.color(.blue), .font(.systemFont(ofSize: 16.0))])
+        ).attributes(at: 0, effectiveRange: nil)
         
         XCTAssertEqual(attributes[.foregroundColor] as? UIColor, UIColor.blue)
         XCTAssertEqual(attributes[.font] as? UIFont, UIFont.systemFont(ofSize: 16.0))
-        XCTAssertEqual((attributes[.paragraphStyle] as? NSMutableParagraphStyle)?.alignment, .left)
     }
 }
