@@ -23,7 +23,7 @@ public final class Pluot
     
     // MARK: API
     
-    public func build(_ components: Component...) -> NSAttributedString
+    public func build(_ components: [Component]) -> NSAttributedString
     {
         components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
             let componentAttribute = component.attribute
@@ -43,5 +43,10 @@ public final class Pluot
             
             attributedString.append(NSAttributedString(string: componentAttribute.string, attributes: attributes))
         }
+    }
+    
+    public func build(_ components: Component...) -> NSAttributedString
+    {
+        self.build(components)
     }
 }
