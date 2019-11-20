@@ -15,6 +15,7 @@ public extension Pluot
     {
         case font(UIFont)
         case color(UIColor)
+        case link(URL)
         case paragraph(_ configuration: (_ style: NSMutableParagraphStyle) -> Void)
         
         // MARK: Attributes
@@ -26,6 +27,8 @@ public extension Pluot
                 return (.font, font)
             case .color(let color):
                 return (.foregroundColor, color)
+            case .link(let url):
+                return (.link, url.absoluteString)
             case .paragraph(let configuration):
                 let style = NSMutableParagraphStyle()
                 configuration(style)
@@ -51,6 +54,8 @@ extension Pluot.Style: Hashable
             hashValue = 1
         case .paragraph:
             hashValue = 2
+        case .link:
+            hashValue = 3
         }
         
         hasher.combine(hashValue)
