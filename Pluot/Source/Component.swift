@@ -16,18 +16,34 @@ public extension Pluot
         case string(String, Set<Style>? = nil)
         case space
         case newline
+        case `if`(@autoclosure () -> Bool, [Component], else: [Component]? = nil)
+        
+        typealias Attribute = (string: String, styles: Set<Style>?)
         
         // MARK: Attribute
         
-        internal var attribute: (string: String, styles: Set<Style>?) {
+        internal var attributes: [Attribute] {
             switch self
             {
             case .space:
-                return (" ", nil)
+                return [(" ", nil)]
             case .newline:
-                return ("\n", nil)
+                return [("\n", nil)]
             case .string(let string, let styles):
-                return (string, styles)
+                return [(string, styles)]
+            case .if(let condition, let components, let elseComponents):
+                guard condition() else
+                {
+                    guard let elseComponents = elseComponents else { return [] }
+                    
+                    return elseComponents.reduce(into: [Attribute](), { (result, component) in
+                        result.append(contentsOf: component.attributes)
+                    })
+                }
+                
+                return components.reduce(into: [Attribute](), { (result, component) in
+                    result.append(contentsOf: component.attributes)
+                })
             }
         }
     }

@@ -42,7 +42,7 @@ internal final class PluotTests: XCTestCase
     }
     
     /// Tests that Pluot uses the specified style.
-    func testOridingStyles()
+    func testOveridingStyles()
     {
         let pluot = Pluot(
             .color(.red),
@@ -58,5 +58,59 @@ internal final class PluotTests: XCTestCase
         
         XCTAssertEqual(attributes[.foregroundColor] as? UIColor, UIColor.blue)
         XCTAssertEqual(attributes[.font] as? UIFont, UIFont.systemFont(ofSize: 16.0))
+    }
+    
+    func testIfStatements()
+    {
+        let pluot = Pluot(
+            .font(.systemFont(ofSize: 24.0))
+        )
+        
+        let notShownString = "can't see"
+        let shownString = "can see"
+        
+        let string = pluot.build(
+            .string("test"),
+            .if(1 == 2, [
+                .string(notShownString)
+            ]),
+            .if(1 == 1, [
+                .string(shownString)
+            ])
+        ).string
+        
+        XCTAssert(string.contains(shownString))
+        XCTAssertFalse(string.contains(notShownString))
+    }
+    
+    func testIfElseStatements()
+    {
+        let pluot = Pluot(
+            .font(.systemFont(ofSize: 24.0))
+        )
+        
+        let expressionOneNotShown = UUID().uuidString
+        let expressionOneShown = UUID().uuidString
+        let expressionTwoNotShown = UUID().uuidString
+        let expressionTwoShown = UUID().uuidString
+        
+        let string = pluot.build(
+            .string("test"),
+            .if(1 == 2, [
+                .string(expressionOneNotShown)
+            ], else: [
+                .string(expressionOneShown)
+            ]),
+            .if(1 == 1, [
+                .string(expressionTwoShown)
+            ], else: [
+                .string(expressionTwoNotShown)
+            ])
+        ).string
+        
+        XCTAssert(string.contains(expressionOneShown))
+        XCTAssert(string.contains(expressionTwoShown))
+        XCTAssertFalse(string.contains(expressionOneNotShown))
+        XCTAssertFalse(string.contains(expressionTwoNotShown))
     }
 }

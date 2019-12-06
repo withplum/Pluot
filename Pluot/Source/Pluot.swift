@@ -26,22 +26,24 @@ public final class Pluot
     public func build(_ components: [Component]) -> NSAttributedString
     {
         components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
-            let componentAttribute = component.attribute
-            let combinedStyles: Set<Style>
-            if let unwrappedStyles = componentAttribute.styles
+            for attribute in component.attributes
             {
-                combinedStyles = unwrappedStyles.union(self.defaultStyles)
+                let combinedStyles: Set<Style>
+                if let unwrappedStyles = attribute.styles
+                {
+                    combinedStyles = unwrappedStyles.union(self.defaultStyles)
+                }
+                else
+                {
+                    combinedStyles = self.defaultStyles
+                }
+                
+                let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
+                    dictionary[style.attribute.0] = style.attribute.1
+                }
+                
+                attributedString.append(NSAttributedString(string: attribute.string, attributes: attributes))
             }
-            else
-            {
-                combinedStyles = self.defaultStyles
-            }
-            
-            let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
-                dictionary[style.attribute.0] = style.attribute.1
-            }
-            
-            attributedString.append(NSAttributedString(string: componentAttribute.string, attributes: attributes))
         }
     }
     

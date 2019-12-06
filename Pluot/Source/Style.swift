@@ -16,7 +16,7 @@ public extension Pluot
         case font(UIFont)
         case color(UIColor)
         case link(URL)
-        case paragraph(_ configuration: (_ style: NSMutableParagraphStyle) -> Void)
+        case paragraph(_ configuration: (_ style: inout NSMutableParagraphStyle) -> Void)
         
         // MARK: Attributes
         
@@ -30,8 +30,8 @@ public extension Pluot
             case .link(let url):
                 return (.link, url.absoluteString)
             case .paragraph(let configuration):
-                let style = NSMutableParagraphStyle()
-                configuration(style)
+                var style = NSMutableParagraphStyle()
+                configuration(&style)
                 
                 return (.paragraphStyle, style)
             }
