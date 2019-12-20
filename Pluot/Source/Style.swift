@@ -11,15 +11,24 @@ import UIKit
 
 public extension Pluot
 {
+    /// Declares a style that is applied to a `Pluot.Component`
     enum Style
     {
+        /// A font style (`NSAttributedString.Key.font`).
         case font(UIFont)
+        
+        /// Foreground color (`NSAttributedString.Key.foregroundColor`).
         case color(UIColor)
+        
+        /// Foreground color (`NSAttributedString.Key.foregroundColor`).
         case link(URL)
+        
+        /// Paragraph style (`NSAttributedString.Key.paragraphStyle`).
         case paragraph(_ configuration: (_ style: inout NSMutableParagraphStyle) -> Void)
         
         // MARK: Attributes
         
+        /// A tuple containing the `NSAttributedString.Key` and its value.
         internal var attribute: (NSAttributedString.Key, Any) {
             switch self
             {

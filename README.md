@@ -20,32 +20,35 @@ dependencies: [
 
 ## Usage
 
+### Initialization
+
 ```
-// Define your styles
-internal struct TestStyleSheet: StyleSheet
-{
-    static let `default` = Style()
-        .font(.systemFont(ofSize: 24.0))
-        .color(.red)
-        .paragraph { (style) in
-            style.alignment = .center
-        }
-    
-    
-    static let body = Style()
-        .font(.systemFont(ofSize: 16.0))
-        .color(.blue)
-        .paragraph { (style) in
-            style.alignment = .left
-        }
-}
+// 1. Build our `Pluot` object with a list of default styles.
+//    These styles will be given to all components unless they're overriden. 
+let pluot = Pluot(
+    .font(.systemFont(ofSize: 24.0)),
+    .color(.red),
+    .paragraph({ (style) in
+        style.alignment = .center
+    })
+)
+```
 
-// Build your string
-let pluot: Pluot<TestStyleSheet> = "Hello, this is a \("test", TestStyleSheet.body). Nice to meet you"
+### Constructing a String
 
-// Set your string
-let label = UILabel()
-label.attributedString = pluot.attributedString
+```
+let view = UILabel()
+view.attributedText = pluot.build(
+    .string("Hello. This string will be given the default styles."),
+    .space,
+    .string("This string will be given different styles", [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)]),
+    .newline,
+    .if(true, [
+        .string("So true")
+    ], else: [
+        .string("So false")
+    ])
+)
 ```
 
 ## License
