@@ -18,6 +18,7 @@ internal final class RootViewController: UIViewController
 
         let view = UILabel()
         view.numberOfLines = 0
+        
         view.attributedText = Pluot(
             .font(.systemFont(ofSize: 24.0)),
             .color(.red),
@@ -27,8 +28,14 @@ internal final class RootViewController: UIViewController
         ).build(
             .string("Hello. This is a test"),
             .space,
-            .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)])
+            .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)]),
+            .if(true, [
+                .string("So true")
+            ], else: [
+                .string("So false")
+            ])
         )
+        
         return view
     }()
     
