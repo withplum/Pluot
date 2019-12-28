@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A42F5C7723B7C0F900193155 /* VerticalGlyphForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42F5C7623B7C0F900193155 /* VerticalGlyphForm.swift */; };
 		A48D288223843F660014C961 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48D288123843F660014C961 /* Style.swift */; };
 		A48D288423843FAE0014C961 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48D288323843FAE0014C961 /* Component.swift */; };
 		A4DA00A9237833E100F9239B /* Pluot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4DA009F237833E000F9239B /* Pluot.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A42F5C7623B7C0F900193155 /* VerticalGlyphForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalGlyphForm.swift; sourceTree = "<group>"; };
 		A48D288123843F660014C961 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		A48D288323843FAE0014C961 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		A4DA009F237833E000F9239B /* Pluot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pluot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 				A4DA00C22378359D00F9239B /* Pluot.swift */,
 				A48D288123843F660014C961 /* Style.swift */,
 				A48D288323843FAE0014C961 /* Component.swift */,
+				A42F5C7623B7C0F900193155 /* VerticalGlyphForm.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A42F5C7723B7C0F900193155 /* VerticalGlyphForm.swift in Sources */,
 				A4DA00C32378359D00F9239B /* Pluot.swift in Sources */,
 				A48D288423843FAE0014C961 /* Component.swift in Sources */,
 				A48D288223843F660014C961 /* Style.swift in Sources */,
