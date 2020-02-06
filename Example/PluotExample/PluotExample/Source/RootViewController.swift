@@ -23,17 +23,19 @@ internal final class RootViewController: UIViewController
             .font(.systemFont(ofSize: 24.0)),
             .color(.red),
             .paragraph({ (style) in
-                style.alignment = .center
+                style.lineHeightMultiple = 1.2
             })
         ).build(
-            .string("Hello. This is a test"),
             .space,
             .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)]),
+            .newline,
             .if(true, [
                 .string("So true")
             ], else: [
                 .string("So false")
-            ])
+            ]),
+            .newline,
+            .string("GRADIENT", [.font(.systemFont(ofSize: 24.0, weight: .bold)), .gradient(Pluot.Gradient(start: CGPoint(x: 0.0, y: 0.5), end: CGPoint(x: 1.0, y: 0.5), colors: .blue, .black))])
         )
         
         return view

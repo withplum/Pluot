@@ -20,7 +20,7 @@ public extension Pluot
         /// Foreground color (`NSAttributedString.Key.foregroundColor`).
         case color(UIColor)
         
-        /// Foreground color (`NSAttributedString.Key.foregroundColor`).
+        /// Link (`NSAttributedString.Key.link`).
         case link(URL)
         
         /// Paragraph style (`NSAttributedString.Key.paragraphStyle`).
@@ -74,10 +74,15 @@ public extension Pluot
         /// Vertical glyph form (`NSAttributedString.Key.verticalGlyphForm`).
         case verticalGlyphForm(VerticalGlyphForm)
         
+        /// Gradient
+        case gradient(Gradient)
+        
         // MARK: Attributes
         
-        /// A tuple containing the `NSAttributedString.Key` and its value.
-        internal var attribute: (NSAttributedString.Key, Any) {
+        /// Builds a tuple containing the `NSAttributedString.Key` and its value.
+        /// - Parameter string: The string that this attribute will be applied to
+        internal func attribute(for string: String, styles: [Style]) -> (NSAttributedString.Key, Any)
+        {
             switch self
             {
             case .font(let font):
@@ -123,63 +128,20 @@ public extension Pluot
                 return (.expansion, value)
             case .verticalGlyphForm(let form):
                 return (.verticalGlyphForm, form.rawValue)
+            case .gradient(let gradient):
+                let attributes = styles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
+                    if case .gradient = style
+                    {
+                        return
+                    }
+                    
+                    let styleAttribute = style.attribute(for: string, styles: styles)
+                    dictionary[styleAttribute.0] = styleAttribute.1
+                }
+                
+                return (.foregroundColor, gradient.patternColor(for: string, with: attributes))
             }
         }
-    }
-}
-
-// MARK: Hashable
-
-extension Pluot.Style: Hashable
-{
-    public func hash(into hasher: inout Hasher)
-    {
-        let hashValue: Int
-        switch self
-        {
-        case .font:
-            hashValue = 0
-        case .color:
-            hashValue = 1
-        case .paragraph:
-            hashValue = 2
-        case .link:
-            hashValue = 3
-        case .backgroundColor:
-            hashValue = 4
-        case .ligature:
-            hashValue = 5
-        case .kerning:
-            hashValue = 6
-        case .strikethroughStyle:
-            hashValue = 7
-        case .strikethroughColor:
-            hashValue = 8
-        case .underlineStyle:
-            hashValue = 9
-        case .strokeColor:
-            hashValue = 10
-        case .strokeWidth:
-            hashValue = 11
-        case .shadow:
-            hashValue = 12
-        case .textEffect:
-            hashValue = 13
-        case .attachment:
-            hashValue = 14
-        case .baselineOffset:
-            hashValue = 15
-        case .underlineColor:
-            hashValue = 16
-        case .obliqueness:
-            hashValue = 17
-        case .expansion:
-            hashValue = 18
-        case .verticalGlyphForm:
-            hashValue = 19
-        }
-        
-        hasher.combine(hashValue)
     }
 }
 
@@ -196,6 +158,42 @@ extension Pluot.Style: Equatable
         case (.color, .color):
             return true
         case (.paragraph, .paragraph):
+            return true
+        case (.link, .link):
+            return true
+        case (.backgroundColor, .backgroundColor):
+            return true
+        case (.ligature, .ligature):
+            return true
+        case (.kerning, .kerning):
+            return true
+        case (.strikethroughStyle, .strikethroughStyle):
+            return true
+        case (.strokeColor, .strikethroughColor):
+            return true
+        case (.underlineStyle, .underlineStyle):
+            return true
+        case (.strokeColor, .strokeColor):
+            return true
+        case (.strokeWidth, .strokeWidth):
+            return true
+        case (.shadow, .shadow):
+            return true
+        case (.textEffect, .textEffect):
+            return true
+        case (.attachment, .attachment):
+            return true
+        case (.baselineOffset, .baselineOffset):
+            return true
+        case (.underlineColor, .underlineColor):
+            return true
+        case (.obliqueness, .obliqueness):
+            return true
+        case (.expansion, .expansion):
+            return true
+        case (.verticalGlyphForm, .verticalGlyphForm):
+            return true
+        case (.gradient, .gradient):
             return true
         default:
             return false

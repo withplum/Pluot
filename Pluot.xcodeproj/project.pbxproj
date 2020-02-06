@@ -15,6 +15,7 @@
 		A4DA00C02378350700F9239B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A4DA00BF2378350700F9239B /* README.md */; };
 		A4DA00C32378359D00F9239B /* Pluot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00C22378359D00F9239B /* Pluot.swift */; };
 		A4DA00C723784FD400F9239B /* PluotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA00C623784FD400F9239B /* PluotTests.swift */; };
+		A4DF07DA23EBF3D7008CCDE9 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DF07D923EBF3D7008CCDE9 /* Gradient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		A4DA00BF2378350700F9239B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A4DA00C22378359D00F9239B /* Pluot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pluot.swift; sourceTree = "<group>"; };
 		A4DA00C623784FD400F9239B /* PluotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluotTests.swift; sourceTree = "<group>"; };
+		A4DF07D923EBF3D7008CCDE9 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				A48D288123843F660014C961 /* Style.swift */,
 				A48D288323843FAE0014C961 /* Component.swift */,
 				A42F5C7623B7C0F900193155 /* VerticalGlyphForm.swift */,
+				A4DF07D923EBF3D7008CCDE9 /* Gradient.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4DF07DA23EBF3D7008CCDE9 /* Gradient.swift in Sources */,
 				A42F5C7723B7C0F900193155 /* VerticalGlyphForm.swift in Sources */,
 				A4DA00C32378359D00F9239B /* Pluot.swift in Sources */,
 				A48D288423843FAE0014C961 /* Component.swift in Sources */,

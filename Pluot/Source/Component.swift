@@ -17,7 +17,7 @@ public extension Pluot
         /// A string component.
         /// The `.string` component can also take an optional set of styles. There styles
         /// will be used to overide the default styles set when initializing a `Pluot` instance.
-        case string(String, Set<Style>? = nil)
+        case string(String, [Style]? = nil)
         
         /// A space component.
         /// Synthatic sugar for `.string(" ")`.
@@ -32,8 +32,8 @@ public extension Pluot
         
         // MARK: Attribute
         
-        /// A tuple of `(string: String, styles: Set<Style>?)`
-        typealias Attribute = (string: String, styles: Set<Style>?)
+        /// A tuple of `(string: String, styles: [Style]?)`
+        typealias Attribute = (string: String, styles: [Style]?)
         
         /// An array of `Attribute` instances.
         internal var attributes: [Attribute] {
