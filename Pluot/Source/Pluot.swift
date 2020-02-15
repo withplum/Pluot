@@ -12,7 +12,7 @@ import UIKit
 public struct Pluot
 {
     // Private
-    private let defaultStyles: Set<Style>
+    private let defaultStyles: [Style]
     
     // MARK: Initialization
     
@@ -21,7 +21,7 @@ public struct Pluot
     /// - Parameter styles: A list of styles that will be used as the default styles for the `Pluot` components.
     public init(_ styles: Style...)
     {
-        self.defaultStyles = Set(styles)
+        self.defaultStyles = styles
     }
     
     /// Creates a `Pluot` instance.
@@ -29,7 +29,7 @@ public struct Pluot
     /// - Parameter styles: An array of styles that will be used as the default styles for the `Pluot` components.
     public init(_ styles: [Style])
     {
-        self.defaultStyles = Set(styles)
+        self.defaultStyles = styles
     }
     
     // MARK: API
@@ -44,10 +44,10 @@ public struct Pluot
         components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
             for attribute in component.attributes
             {
-                let combinedStyles: Set<Style>
+                let combinedStyles: [Style]
                 if let unwrappedStyles = attribute.styles
                 {
-                    combinedStyles = unwrappedStyles.union(self.defaultStyles)
+                    combinedStyles = self.defaultStyles + unwrappedStyles
                 }
                 else
                 {
@@ -55,7 +55,7 @@ public struct Pluot
                 }
                 
                 let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
-                    dictionary[style.attribute.0] = style.attribute.1
+                    style.closure(&dictionary)
                 }
                 
                 attributedString.append(NSAttributedString(string: attribute.string, attributes: attributes))
