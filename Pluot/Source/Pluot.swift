@@ -42,24 +42,7 @@ public struct Pluot
     public func build(_ components: [Component]) -> NSAttributedString
     {
         components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
-            for attribute in component.attributes
-            {
-                let combinedStyles: [Style]
-                if let unwrappedStyles = attribute.styles
-                {
-                    combinedStyles = self.defaultStyles + unwrappedStyles
-                }
-                else
-                {
-                    combinedStyles = self.defaultStyles
-                }
-                
-                let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
-                    style.closure(&dictionary)
-                }
-                
-                attributedString.append(NSAttributedString(string: attribute.string, attributes: attributes))
-            }
+            attributedString.append(component.attributedString(with: self.defaultStyles))
         }
     }
     

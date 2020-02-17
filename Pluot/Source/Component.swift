@@ -6,7 +6,7 @@
 //  Copyright © 2019 Plum Fintech Limited. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 public extension Pluot
@@ -30,13 +30,17 @@ public extension Pluot
         /// An if component for building logic into component structure.
         case `if`(@autoclosure () -> Bool, [Component], else: [Component]? = nil)
         
+        /// An image component.
+        /// Embed an image into the `NSAttributedString`.
+        case image(UIImage)
+        
         // MARK: Attribute
         
         /// A tuple of `(string: String, styles: Set<Style>?)`
-        typealias Attribute = (string: String, styles: Set<Style>?)
+        private typealias Attribute = (string: String, styles: Set<Style>?)
         
         /// An array of `Attribute` instances.
-        internal var attributes: [Attribute] {
+        private var attributes: [Attribute] {
             switch self
             {
             case .space:
@@ -58,6 +62,32 @@ public extension Pluot
                 return components.reduce(into: [Attribute](), { (result, component) in
                     result.append(contentsOf: component.attributes)
                 })
+            case .image:
+                return []
+            }
+        }
+        
+        // MARK: API
+        
+        internal func attributedString(with styles: [Style]) -> NSAttributedString
+        {
+            switch self
+            {
+            case .image(let image):
+                let attachment = NSTextAttachment()
+                attachment.image = image
+                
+                return NSAttributedString(attachment: attachment)
+            default:
+                return self.attributes.reduce(into: NSMutableAttributedString()) { (string, attribute) in
+                    let combinedStyles = styles + (attribute.styles ?? [])
+
+                    let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
+                        style.closure(&dictionary)
+                    }
+                    
+                    string.append(NSAttributedString(string: attribute.string, attributes: attributes))
+                }
             }
         }
     }
