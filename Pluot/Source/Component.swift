@@ -11,83 +11,168 @@ import UIKit
 
 public extension Pluot
 {
-    /// Represents a component used for constructing text.
-    enum Component
+    struct Component
     {
-        /// A string component.
-        /// The `.string` component can also take an optional set of styles. There styles
-        /// will be used to overide the default styles set when initializing a `Pluot` instance.
-        case string(String, Set<Style>? = nil)
+        // Public
+        public typealias Closure = (_ defaultStyles: [Style]) -> NSAttributedString?
         
-        /// A space component.
-        /// Synthatic sugar for `.string(" ")`.
-        case space
+        // Internal
+        internal let closure: Closure
         
-        /// A newline component.
-        /// Synthatic sugar for `.string("\n")`.
-        case newline
+        // MARK: Initialization
         
-        /// An if component for building logic into component structure.
-        case `if`(@autoclosure () -> Bool, [Component], else: [Component]? = nil)
-        
-        /// An image component.
-        /// Embed an image into the `NSAttributedString`.
-        case image(UIImage)
-        
-        // MARK: Attribute
-        
-        /// A tuple of `(string: String, styles: Set<Style>?)`
-        private typealias Attribute = (string: String, styles: Set<Style>?)
-        
-        /// An array of `Attribute` instances.
-        private var attributes: [Attribute] {
-            switch self
-            {
-            case .space:
-                return [(" ", nil)]
-            case .newline:
-                return [("\n", nil)]
-            case .string(let string, let styles):
-                return [(string, styles)]
-            case .if(let condition, let components, let elseComponents):
-                guard condition() else
-                {
-                    guard let elseComponents = elseComponents else { return [] }
-                    
-                    return elseComponents.reduce(into: [Attribute](), { (result, component) in
-                        result.append(contentsOf: component.attributes)
-                    })
-                }
-                
-                return components.reduce(into: [Attribute](), { (result, component) in
-                    result.append(contentsOf: component.attributes)
-                })
-            case .image:
-                return []
+        /// Creates a `Component` instance.
+        /// - Parameter closure: A closure to construct the component.
+        public init(_ closure: @escaping Closure)
+        {
+            self.closure = closure
+        }
+    }
+}
+
+// MARK: String
+
+public extension Pluot.Component
+{
+    /// A string component.
+    /// The component can also take an optional set of styles. The styles
+    /// will be used to overide the default styles set when initializing a `Pluot` instance.
+    /// - Parameters:
+    ///   - string: A string instance.
+    ///   - styles: An array of styles.
+    /// - Returns: A `Component` instance.
+    static func string(_ string: String, _ styles: [Pluot.Style]? = nil) -> Pluot.Component
+    {
+        return Pluot.Component { (defaultStyles) -> NSAttributedString? in
+            let combinedStyles = defaultStyles + (styles ?? [])
+
+            let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
+                style.closure(&dictionary)
+            }
+            
+            return NSAttributedString(string: string, attributes: attributes)
+        }
+    }
+}
+
+// MARK: Space
+
+public extension Pluot.Component
+{
+    /// A space component.
+    /// Synthatic sugar for `.string(" ")`.
+    /// - Returns: A `Pluot.Component` instance.
+    static func space() -> Pluot.Component
+    {
+        return .string(" ")
+    }
+}
+
+// MARK: Newline
+
+public extension Pluot.Component
+{
+    /// A newline component.
+    /// Synthatic sugar for `.string(" ")`.
+    /// - Returns: A `Pluot.Component` instance.
+    static func newline() -> Pluot.Component
+    {
+        return .string("\n")
+    }
+}
+
+// MARK: Image
+
+public extension Pluot.Component
+{
+    /// An image component.
+    /// Embed an image into the `NSAttributedString`.
+    /// - Parameters:
+    ///   - image: An image instance.
+    /// - Returns: A `Pluot.Component` instance.
+    static func image(_ image: UIImage) -> Pluot.Component
+    {
+        return Pluot.Component { (defaultStyles) -> NSAttributedString? in
+            let attachment = NSTextAttachment()
+            attachment.image = image
+            
+            return NSAttributedString(attachment: attachment)
+        }
+    }
+}
+
+// MARK: If
+
+public extension Pluot.Component
+{
+    /// An if component.
+    /// Used for building flow of logic.
+    /// - Parameters:
+    ///   - condition: A condition that determines whether `components` are constructed.
+    ///   - components: An array of components.
+    static func `if`(_ condition: @escaping @autoclosure () -> Bool, _ components: @escaping @autoclosure () -> [Pluot.Component]) -> Pluot.Component
+    {
+        return Pluot.Component { (defaultStyles) -> NSAttributedString? in
+            guard condition() else { return nil }
+            
+            return components().reduce(into: NSMutableAttributedString()) { (string, component) in
+                guard let componentString = component.closure(defaultStyles) else { return }
+                string.append(componentString)
             }
         }
-        
-        // MARK: API
-        
-        internal func attributedString(with styles: [Style]) -> NSAttributedString
-        {
-            switch self
-            {
-            case .image(let image):
-                let attachment = NSTextAttachment()
-                attachment.image = image
-                
-                return NSAttributedString(attachment: attachment)
-            default:
-                return self.attributes.reduce(into: NSMutableAttributedString()) { (string, attribute) in
-                    let combinedStyles = styles + (attribute.styles ?? [])
+    }
+}
 
-                    let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
-                        style.closure(&dictionary)
-                    }
-                    
-                    string.append(NSAttributedString(string: attribute.string, attributes: attributes))
-                }
+// MARK: If else
+
+public extension Pluot.Component
+{
+    /// An if else component.
+    /// Used for building flow of logic.
+    /// If the condition is met, then the `ifComponents` are constructed, otherwise
+    /// the `elseComponents` are.
+    /// - Parameters:
+    ///   - condition: A condition that determines whether `ifComponents` are constructed.
+    ///   - ifComponents: An array of components.
+    ///   - elseComponents: An array of components.
+    static func `if`(_ condition: @escaping @autoclosure () -> Bool, _ ifComponents: @escaping @autoclosure () -> [Pluot.Component], else elseComponents: @escaping @autoclosure () -> [Pluot.Component]) -> Pluot.Component
+    {
+        return Pluot.Component { (defaultStyles) -> NSAttributedString? in
+            let components: [Pluot.Component]
+            if condition()
+            {
+                components = ifComponents()
+            }
+            else
+            {
+                components = elseComponents()
+            }
+            
+            return components.reduce(into: NSMutableAttributedString()) { (string, component) in
+                guard let componentString = component.closure(defaultStyles) else { return }
+                string.append(componentString)
+            }
+        }
+    }
+}
+
+// MARK: Unwrap
+
+public extension Pluot.Component
+{
+    /// An unwrap component.
+    /// If an optional value is not nil then the components are constructed.
+    /// - Parameters:
+    ///   - condition: A condition that determines whether `components` are constructed.
+    ///   - components: An array of components.
+    static func unwrap<T>(_ value: T?, _ components: @escaping (_ value: T) -> [Pluot.Component]) -> Pluot.Component
+    {
+        return Pluot.Component { (defaultStyles) -> NSAttributedString? in
+            guard let value = value else { return nil }
+            
+            return components(value).reduce(into: NSMutableAttributedString()) { (string, component) in
+                guard let componentString = component.closure(defaultStyles) else { return }
+                string.append(componentString)
             }
         }
     }

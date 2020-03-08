@@ -28,9 +28,9 @@ internal final class RootViewController: UIViewController
         ).build(
             .string("Hello. This is a test"),
             .string("This should be bold", [.bold()]),
-            .space,
+            .space(),
             .image(UIImage(named: "Icon")!),
-            .space,
+            .space(),
             .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)]),
             .if(true, [
                 .string("So true")

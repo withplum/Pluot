@@ -113,4 +113,28 @@ internal final class PluotTests: XCTestCase
         XCTAssertFalse(string.contains(expressionOneNotShown))
         XCTAssertFalse(string.contains(expressionTwoNotShown))
     }
+    
+    func testUnwrappingValue()
+    {
+        let pluot = Pluot(
+            .font(.systemFont(ofSize: 24.0))
+        )
+        
+        let optionalString: String? = "test"
+        let optionalNilString: String? = nil
+        let expressionOneNotShown = UUID().uuidString
+        let expressionOneShown = UUID().uuidString
+        
+        let string = pluot.build(
+            .unwrap(optionalNilString, { (value) -> [Pluot.Component] in
+                return [.string(expressionOneNotShown)]
+            }),
+            .unwrap(optionalString, { (value) -> [Pluot.Component] in
+                return [.string(expressionOneShown)]
+            })
+        ).string
+        
+        XCTAssert(string.contains(expressionOneShown))
+        XCTAssertFalse(string.contains(expressionOneNotShown))
+    }
 }
