@@ -11,8 +11,8 @@ import UIKit
 
 public struct Pluot
 {
-    // Private
-    private let defaultStyles: [Style]
+    // Public
+    public let styles: [Style]
     
     // MARK: Initialization
     
@@ -20,14 +20,14 @@ public struct Pluot
     /// - Parameter styles: A list of styles that will be used as the default styles for the `Pluot` components.
     public init(_ styles: Style...)
     {
-        self.defaultStyles = styles
+        self.styles = styles
     }
     
     /// Creates a `Pluot` instance.
     /// - Parameter styles: An array of styles that will be used as the default styles for the `Pluot` components.
     public init(_ styles: [Style])
     {
-        self.defaultStyles = styles
+        self.styles = styles
     }
     
     // MARK: API
@@ -38,7 +38,7 @@ public struct Pluot
     public func build(_ components: [Component]) -> NSAttributedString
     {
         components.reduce(into: NSMutableAttributedString()) { (attributedString, component) in
-            guard let string = component.closure(self.defaultStyles) else { return }
+            guard let string = component.closure(self.styles) else { return }
             attributedString.append(string)
         }
     }
