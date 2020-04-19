@@ -20,3 +20,4 @@ Carthage/Build/*
 /sync_dsym
 /fastlane/report.xml
 /Scripts/sync_dsym
+/.swiftpm
