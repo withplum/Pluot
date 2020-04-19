@@ -12,7 +12,7 @@ import UIKit
 public struct Pluot
 {
     // Public
-    public let styles: [Style]
+    public let styles: Set<Style>
     
     // MARK: Initialization
     
@@ -20,12 +20,12 @@ public struct Pluot
     /// - Parameter styles: A list of styles that will be used as the default styles for the `Pluot` components.
     public init(_ styles: Style...)
     {
-        self.styles = styles
+        self.styles = Set(styles)
     }
     
     /// Creates a `Pluot` instance.
     /// - Parameter styles: An array of styles that will be used as the default styles for the `Pluot` components.
-    public init(_ styles: [Style])
+    public init(_ styles: Set<Style>)
     {
         self.styles = styles
     }

@@ -14,7 +14,7 @@ public extension Pluot
     struct Component
     {
         // Public
-        public typealias Closure = (_ defaultStyles: [Style]) -> NSAttributedString?
+        public typealias Closure = (_ defaultStyles: Set<Style>) -> NSAttributedString?
         
         // Internal
         internal let closure: Closure
@@ -41,11 +41,19 @@ public extension Pluot.Component
     ///   - string: A string instance.
     ///   - styles: An array of styles.
     /// - Returns: A `Component` instance.
-    static func string(_ string: String, _ styles: [Pluot.Style]? = nil) -> Pluot.Component
+    static func string(_ string: String, _ styles: Set<Pluot.Style>? = nil) -> Pluot.Component
     {
         return Pluot.Component { (defaultStyles) -> NSAttributedString? in
-            let combinedStyles = defaultStyles + (styles ?? [])
-
+            let combinedStyles: Set<Pluot.Style>
+            if let styles = styles
+            {
+                combinedStyles = styles.union(defaultStyles)
+            }
+            else
+            {
+                combinedStyles = defaultStyles
+            }
+                
             let attributes = combinedStyles.reduce(into: [NSAttributedString.Key : Any]()) { (dictionary, style) in
                 style.closure(&dictionary)
             }
