@@ -163,7 +163,7 @@ public extension Pluot.Style
     static func strikethroughStyle(_ style: NSUnderlineStyle) -> Pluot.Style
     {
         return Pluot.Style(id: "strikethroughStyle") { (attributes) in
-            attributes[.strikethroughStyle] = style
+            attributes[.strikethroughStyle] = style.rawValue
         }
     }
 }
@@ -191,7 +191,7 @@ public extension Pluot.Style
     static func underlineStyle(_ style: NSUnderlineStyle) -> Pluot.Style
     {
         return Pluot.Style(id: "underlineStyle") { (attributes) in
-            attributes[.underlineStyle] = style
+            attributes[.underlineStyle] = style.rawValue
         }
     }
 }

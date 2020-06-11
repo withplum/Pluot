@@ -27,11 +27,11 @@ internal final class RootViewController: UIViewController
             })
         ).build(
             .string("Hello. This is a test"),
-            .string("This should be bold", [.bold()]),
+            .string("This should be bold", [.bold(), .underlineStyle(.double)]),
             .space(),
             .image(UIImage(named: "Icon")!),
             .space(),
-            .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue)]),
+            .string(uuid, [.font(.systemFont(ofSize: 24.0, weight: .bold)), .color(.blue), .strikethroughStyle(.single)]),
             .if(true, [
                 .string("So true")
             ], else: [
