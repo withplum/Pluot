@@ -97,13 +97,14 @@ public extension Pluot.Component
     /// Embed an image into the `NSAttributedString`.
     /// - Parameters:
     ///   - image: An image instance.
+    ///   - bounds: Defines the layout bounds of the receiver's graphical representation in the text coordinate system. The origin is at the glyph location on the text baseline. The default value is CGRectZero.
     /// - Returns: A `Pluot.Component` instance.
-    static func image(_ image: UIImage) -> Pluot.Component
+    static func image(_ image: UIImage, bounds: CGRect = .zero) -> Pluot.Component
     {
         return Pluot.Component { (defaultStyles) -> NSAttributedString? in
             let attachment = NSTextAttachment()
             attachment.image = image
-            
+            attachment.bounds = bounds
             return NSAttributedString(attachment: attachment)
         }
     }
